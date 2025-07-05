@@ -9,9 +9,13 @@ import com.project.HRM.DTO.EmployeeDto;
 @Service
 public interface EmployeeService {
 
-	public EmployeeDto addEmployee(EmployeeDto employeeDto);
+	EmployeeDto addEmployee(EmployeeDto employeeDto);
 	
-	public EmployeeDto getEmpById(Long employeeId);
+	EmployeeDto getEmpById(Long employeeId);
 	
-	public List<EmployeeDto> getAllEmp();
+	List<EmployeeDto> getAllEmp();
+	
+	EmployeeDto updateEmp(Long employeeId,EmployeeDto updatedEmp);
+	
+	void deleteEmp(Long employeeId);
 }
