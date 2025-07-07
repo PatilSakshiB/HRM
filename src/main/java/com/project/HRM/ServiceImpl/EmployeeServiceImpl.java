@@ -42,7 +42,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 	@Override
 	public EmployeeDto updateEmp(Long employeeId, EmployeeDto updatedEmp) {
-		Employee employee= employeeRepo.findById(employeeId).orElseThrow(() -> new ResourceNotFoundException("Employee is not found with given Id: "+employeeId));
+		Employee employee= employeeRepo.findById(employeeId).orElseThrow(() -> new ResourceNotFoundException("Employee not found with given Id: "+employeeId));
 		employee.setFullName(updatedEmp.getFullName());
 		employee.setEmail(updatedEmp.getEmail());
 		employee.setPhoneNo(updatedEmp.getPhoneNo());
@@ -53,8 +53,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 	@Override
 	public void deleteEmp(Long employeeId) {
-		Employee employee= employeeRepo.findById(employeeId).orElseThrow(() -> new ResourceNotFoundException("Employee is not found with given Id: "+employeeId));
-		employeeRepo.deleteById(employeeId);
+		Employee employee= employeeRepo.findById(employeeId).orElseThrow(() -> new ResourceNotFoundException("Employee not found with given Id: "+employeeId));
+		employeeRepo.delete(employee);
 	}
 
 }
