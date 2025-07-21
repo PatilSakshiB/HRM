@@ -11,7 +11,9 @@ public class EmployeeMapper {
 				employee.getFullName(),
 				employee.getPhoneNo(),
 				employee.getEmail(),
-				employee.getDepartment());
+				employee.getDepartment(),
+				employee.getVerificationToken(),
+				employee.isVerified());
 	}
 
 	public static Employee mapToEmployee(EmployeeDto employeeDto) {
@@ -20,8 +22,9 @@ public class EmployeeMapper {
 				employeeDto.getFullName(),
 				employeeDto.getEmail(),
 				employeeDto.getPhoneNo(),
-				employeeDto.getDepartment());
-				
+				employeeDto.getDepartment(),
+				employeeDto.getVerificationToken(),
+				employeeDto.isVerified());
 	}
 }
 

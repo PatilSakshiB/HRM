@@ -1,6 +1,7 @@
 package com.project.HRM.ServiceImpl;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -23,7 +24,10 @@ public class EmployeeServiceImpl implements EmployeeService{
 	@Override
 	public EmployeeDto addEmployee(EmployeeDto employeeDto) {
 		Employee employee = EmployeeMapper.mapToEmployee(employeeDto);
-		Employee savedEmp = employeeRepo.save(employee);
+		String token = UUID.randomUUID().toString();
+        employee.setVerificationToken(token);
+        employee.setVerified(false);
+        Employee savedEmp = employeeRepo.save(employee);
 		return EmployeeMapper.mapToEmployeeDto(savedEmp);
 	}
 

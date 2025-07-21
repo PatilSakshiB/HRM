@@ -25,4 +25,7 @@ public class Employee {
 	private String email;
 	private String phoneNo;
 	private String department;
+	
+	private String verificationToken;
+    private boolean isVerified = false;
 }
