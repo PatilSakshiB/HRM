@@ -5,12 +5,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import javax.crypto.SecretKey;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtHelper {
@@ -69,5 +73,6 @@ public class JwtHelper {
 	        final String username = getUsernameFromToken(token);
 	        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	    }
+	    
 
 }
