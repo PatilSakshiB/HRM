@@ -26,31 +26,35 @@ import lombok.AllArgsConstructor;
 public class EmployeeController {
 
 	private EmployeeService employeeService;
-	
+
+	//Add Employee
 	@PostMapping("/add")
 	public ResponseEntity<EmployeeDto> addEmployee(@RequestBody EmployeeDto employeeDto){
 		EmployeeDto employee = employeeService.addEmployee(employeeDto);
 		return new ResponseEntity<>(employee,HttpStatus.CREATED);
 	}
-	
+
+	//Get employee by id
 	@GetMapping("/getById/{id}")
 	public ResponseEntity<EmployeeDto> getEmpById(@PathVariable("id") Long employeeId){
 		EmployeeDto employee = employeeService.getEmpById(employeeId);
 		return ResponseEntity.ok(employee);		
 	}
-	
+
+	//Get all employee
 	@GetMapping("/getAll")
 	public ResponseEntity<List<EmployeeDto>> getAllEmployees(){
 		List<EmployeeDto> empList = employeeService.getAllEmp();
 		return ResponseEntity.ok(empList);
 	}
-	
+
+	//Update employee
 	@PutMapping("/updateEmp/{id}")
 	public ResponseEntity<EmployeeDto> updateEmployee(@PathVariable("id") Long employeeId,@RequestBody EmployeeDto updatedEmp){
 		EmployeeDto employee = employeeService.updateEmp(employeeId, updatedEmp);
 		return ResponseEntity.ok(employee);
 	}
-	
+	//Delete employee
 	@DeleteMapping("/deleteEmp/{id}")
 	public ResponseEntity<String> deleteEmployee(@PathVariable("id") Long employeeId){
 		employeeService.deleteEmp(employeeId);
