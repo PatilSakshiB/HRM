@@ -8,8 +8,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.project.HRM.DTO.UserDTO;
+import com.project.HRM.Entity.Department;
 import com.project.HRM.Entity.Role;
 import com.project.HRM.Entity.User;
+import com.project.HRM.Repository.DepartmentRepo;
 import com.project.HRM.Repository.RoleRepository;
 import com.project.HRM.Repository.UserRepository;
 import com.project.HRM.Service.UserService;
@@ -29,6 +31,9 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private DepartmentRepo departmentRepo;
+	
 	@Override
 	public UserDTO createUser(UserDTO userDTO) {
 		User user=mapper.map(userDTO, User.class);
@@ -39,7 +44,14 @@ public class UserServiceImpl implements UserService{
 			return roleRepository.save(newRole);
 		});
 		user.setRole(role);
-		 String token = UUID.randomUUID().toString();
+		Department department=departmentRepo.findByDepartment(userDTO.getDepartment())
+				.orElseGet(() -> {
+	                Department newDept = new Department();
+	                newDept.setDepartment(userDTO.getDepartment());
+	                return departmentRepo.save(newDept);
+	            });
+		user.setDepartment(department);
+		 String token = UUID.randomUUID().toString();    
 	        user.setVerificationToken(token);
 	        user.setVerified(false);
 

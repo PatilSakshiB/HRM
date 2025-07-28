@@ -1,23 +1,25 @@
 package com.project.HRM.DTO;
 
-import com.project.HRM.Entity.Role;
-
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+@Builder
+@ToString
+public class LoginResponse {
 
+	private Long id;
+	private  String token ;
 	private String fullName;
 	private String email;
-	private String password;
 	private String phoneNo;
 	private String address;
-	private Role role;
-	private String department;
+	
 }
