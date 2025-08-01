@@ -76,4 +76,15 @@ public class AuthController {
 		UserDTO user=userService.createUser(userDTO);
 		return ResponseEntity.ok(new ApiResponse<>("200", "User Created Successfully", user));
 	}
+	
+	@PostMapping("/register-admin")
+	public ResponseEntity<ApiResponse<UserDTO>> createAdmin(@Valid @RequestBody UserDTO userDTO){
+		UserDTO user=userService.createAdmin(userDTO);
+		return ResponseEntity.ok(new ApiResponse<>("200", "Admin Created Successfully", user));
+	}
+	@PostMapping("/register-superAdmin")
+	public ResponseEntity<ApiResponse<UserDTO>> createSuperAdmin(@Valid @RequestBody UserDTO userDTO){
+		UserDTO user=userService.createSuperAdmin(userDTO);
+		return ResponseEntity.ok(new ApiResponse<>("200", "SuperAdmin Created Successfully", user));
+	}
 }

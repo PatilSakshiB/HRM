@@ -27,9 +27,6 @@ public class SecurityConfig {
 	 @Autowired
 	    private JwtAuthenticationFilter filter;
 
-	    @Autowired
-	    private UserDetailsService userDetailsService;
-	    
 	    @Bean
 	    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -38,6 +35,8 @@ public class SecurityConfig {
 	                .authorizeHttpRequests(auth -> auth
 	                        .requestMatchers("/employees/**").permitAll()
 	                        .requestMatchers("/auth/**").permitAll()
+	                        .requestMatchers("/auth/register-admin").hasAuthority("ROLE_SUPERADMIN") 
+	                        .requestMatchers("/auth/register").hasAnyAuthority("ROLE_ADMIN", "ROLE_SUPERADMIN")
 	                        .anyRequest().authenticated())
 	                .httpBasic(Customizer.withDefaults())
 	                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

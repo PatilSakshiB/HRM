@@ -60,4 +60,56 @@ public class UserServiceImpl implements UserService{
 		return mapper.map(saved, UserDTO.class);
 	}
 
+	@Override
+	public UserDTO createSuperAdmin(UserDTO userDTO) {
+		User user=mapper.map(userDTO, User.class);
+		user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+		Role role=roleRepository.findByRole("ROLE_SUPERADMIN").orElseGet(() ->{
+			Role newRole=new Role();
+			newRole.setRole("ROLE_SUPERADMIN");
+			return roleRepository.save(newRole);
+		});
+		user.setRole(role);
+		Department department=departmentRepo.findByDepartment(userDTO.getDepartment())
+				.orElseGet(() -> {
+	                Department newDept = new Department();
+	                newDept.setDepartment(userDTO.getDepartment());
+	                return departmentRepo.save(newDept);
+	            });
+		user.setDepartment(department);
+		 String token = UUID.randomUUID().toString();    
+	        user.setVerificationToken(token);
+	        user.setVerified(false);
+
+	        User saved = this.userRepository.save(user);
+		
+		return mapper.map(saved, UserDTO.class);
+	}
+
+	@Override
+	public UserDTO createAdmin(UserDTO userDTO) {
+		User user=mapper.map(userDTO, User.class);
+		user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+		Role role=roleRepository.findByRole("ROLE_ADMIN").orElseGet(() ->{
+			Role newRole=new Role();
+			newRole.setRole("ROLE_ADMIN");
+			return roleRepository.save(newRole);
+		});
+		user.setRole(role);
+		Department department=departmentRepo.findByDepartment(userDTO.getDepartment())
+				.orElseGet(() -> {
+	                Department newDept = new Department();
+	                newDept.setDepartment(userDTO.getDepartment());
+	                return departmentRepo.save(newDept);
+	            });
+		user.setDepartment(department);
+		 String token = UUID.randomUUID().toString();    
+	        user.setVerificationToken(token);
+	        user.setVerified(false);
+
+	        User saved = this.userRepository.save(user);
+		
+		return mapper.map(saved, UserDTO.class);
+	}
+
 }
