@@ -36,6 +36,9 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public UserDTO createUser(UserDTO userDTO) {
+		if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
+			throw new RuntimeException("Email already exists!");
+		}
 		User user=mapper.map(userDTO, User.class);
 		user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		Role role=roleRepository.findByRole("ROLE_USER").orElseGet(() ->{
@@ -62,6 +65,9 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public UserDTO createSuperAdmin(UserDTO userDTO) {
+		if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
+			throw new RuntimeException("Email already exists!");
+		}
 		User user=mapper.map(userDTO, User.class);
 		user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		Role role=roleRepository.findByRole("ROLE_SUPERADMIN").orElseGet(() ->{
@@ -88,6 +94,9 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public UserDTO createAdmin(UserDTO userDTO) {
+		if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
+			throw new RuntimeException("Email already exists!");
+		}
 		User user=mapper.map(userDTO, User.class);
 		user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		Role role=roleRepository.findByRole("ROLE_ADMIN").orElseGet(() ->{

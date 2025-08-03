@@ -1,5 +1,8 @@
 package com.project.HRM.Controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,60 +34,68 @@ public class AuthController {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private AuthenticationManager authenticationManager;
-	
+
 	@Autowired
 	private MyUserDetailsService userDetailsService;
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
-    private JwtHelper jwtHelper;
-	
+	private JwtHelper jwtHelper;
+
 	@PostMapping("/login")
-	public ResponseEntity<ApiResponse<LoginResponse>> login(@RequestBody LoginRequest loginRequest){
+	public ResponseEntity<ApiResponse<LoginResponse>> login(@RequestBody LoginRequest loginRequest) {
 		this.doAuthenticate(loginRequest.getEmail(), loginRequest.getPassword());
-		UserDetails userDetails= userDetailsService.loadUserByUsername(loginRequest.getEmail());
-		String token=jwtHelper.generateToken(userDetails);
-		User user=userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(()->new UsernameNotFoundException("User not found with email: "+loginRequest.getEmail()));
-		LoginResponse response=LoginResponse.builder()
-				.id(user.getId())
-				.token(token)
-				.email(user.getEmail())
-				.fullName(user.getFullName())
-				.phoneNo(user.getPhoneNo())
-				.address(user.getAddress())
-				.build();
+		UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getEmail());
+		String token = jwtHelper.generateToken(userDetails);
+		User user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(
+				() -> new UsernameNotFoundException("User not found with email: " + loginRequest.getEmail()));
+		LoginResponse response = LoginResponse.builder().id(user.getId()).token(token).email(user.getEmail())
+				.fullName(user.getFullName()).phoneNo(user.getPhoneNo()).address(user.getAddress()).build();
 		return new ResponseEntity<>(new ApiResponse<>("200", "User Logged Successfully", response), HttpStatus.OK);
 	}
-	
-	 private void doAuthenticate(String username, String password) {
-	        UsernamePasswordAuthenticationToken authentication =
-	                new UsernamePasswordAuthenticationToken(username, password);
-	        try {
-	            authenticationManager.authenticate(authentication);
-	        } catch (BadCredentialsException e) {
-	            throw new BadCredentialsException("Invalid username or password");
-	        }
-	    }
-	
+
+	private void doAuthenticate(String username, String password) {
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username,
+				password);
+		try {
+			authenticationManager.authenticate(authentication);
+		} catch (BadCredentialsException e) {
+			throw new BadCredentialsException("Invalid username or password");
+		}
+	}
+
 	@PostMapping("/register")
-	public ResponseEntity<ApiResponse<UserDTO>> createUser(@Valid @RequestBody UserDTO userDTO){
-		UserDTO user=userService.createUser(userDTO);
-		return ResponseEntity.ok(new ApiResponse<>("200", "User Created Successfully", user));
+	public ResponseEntity<ApiResponse<UserDTO>> createUser(@Valid @RequestBody UserDTO userDTO) {
+		try {
+			UserDTO user = userService.createUser(userDTO);
+			return ResponseEntity.ok(new ApiResponse<>("200", "User Created Successfully", user));
+		} catch (RuntimeException ex) {
+			return ResponseEntity.badRequest().body(new ApiResponse<>("400", ex.getMessage(), null));
+		}
 	}
-	
+
 	@PostMapping("/register-admin")
-	public ResponseEntity<ApiResponse<UserDTO>> createAdmin(@Valid @RequestBody UserDTO userDTO){
-		UserDTO user=userService.createAdmin(userDTO);
-		return ResponseEntity.ok(new ApiResponse<>("200", "Admin Created Successfully", user));
+	public ResponseEntity<ApiResponse<UserDTO>> createAdmin(@Valid @RequestBody UserDTO userDTO) {
+		try {
+			UserDTO user = userService.createAdmin(userDTO);
+			return ResponseEntity.ok(new ApiResponse<>("200", "Admin Created Successfully", user));
+		} catch (RuntimeException ex) {
+			return ResponseEntity.badRequest().body(new ApiResponse<>("400", ex.getMessage(), null));
+		}
 	}
+
 	@PostMapping("/register-superAdmin")
-	public ResponseEntity<ApiResponse<UserDTO>> createSuperAdmin(@Valid @RequestBody UserDTO userDTO){
-		UserDTO user=userService.createSuperAdmin(userDTO);
-		return ResponseEntity.ok(new ApiResponse<>("200", "SuperAdmin Created Successfully", user));
+	public ResponseEntity<ApiResponse<UserDTO>> createSuperAdmin(@Valid @RequestBody UserDTO userDTO) {
+		try {
+			UserDTO user = userService.createSuperAdmin(userDTO);
+			return ResponseEntity.ok(new ApiResponse<>("200", "SuperAdmin Created Successfully", user));
+		} catch (RuntimeException ex) {
+			return ResponseEntity.badRequest().body(new ApiResponse<>("400", ex.getMessage(), null));
+		}
 	}
 }

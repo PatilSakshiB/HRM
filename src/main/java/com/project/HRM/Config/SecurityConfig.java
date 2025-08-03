@@ -34,9 +34,9 @@ public class SecurityConfig {
 	        http.csrf(csrf -> csrf.disable())
 	                .authorizeHttpRequests(auth -> auth
 	                        .requestMatchers("/employees/**").permitAll()
-	                        .requestMatchers("/auth/**").permitAll()
 	                        .requestMatchers("/auth/register-admin").hasAuthority("ROLE_SUPERADMIN") 
 	                        .requestMatchers("/auth/register").hasAnyAuthority("ROLE_ADMIN", "ROLE_SUPERADMIN")
+	                        .requestMatchers("/auth/**").permitAll()
 	                        .anyRequest().authenticated())
 	                .httpBasic(Customizer.withDefaults())
 	                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
