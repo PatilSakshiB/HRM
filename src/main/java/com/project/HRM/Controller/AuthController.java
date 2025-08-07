@@ -47,6 +47,7 @@ public class AuthController {
 	@Autowired
 	private JwtHelper jwtHelper;
 
+	//User Login 
 	@PostMapping("/login")
 	public ResponseEntity<ApiResponse<LoginResponse>> login(@RequestBody LoginRequest loginRequest) {
 		this.doAuthenticate(loginRequest.getEmail(), loginRequest.getPassword());
@@ -69,6 +70,7 @@ public class AuthController {
 		}
 	}
 
+	//User Registration
 	@PostMapping("/register")
 	public ResponseEntity<ApiResponse<UserDTO>> createUser(@Valid @RequestBody UserDTO userDTO) {
 		try {
@@ -79,6 +81,7 @@ public class AuthController {
 		}
 	}
 
+	//Admin Registration
 	@PostMapping("/register-admin")
 	public ResponseEntity<ApiResponse<UserDTO>> createAdmin(@Valid @RequestBody UserDTO userDTO) {
 		try {
@@ -89,6 +92,7 @@ public class AuthController {
 		}
 	}
 
+	//SuperAdmin Registration
 	@PostMapping("/register-superAdmin")
 	public ResponseEntity<ApiResponse<UserDTO>> createSuperAdmin(@Valid @RequestBody UserDTO userDTO) {
 		try {
